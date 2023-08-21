@@ -1,16 +1,17 @@
 import streamlit as st
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 import os
 import wget
 
 # Download and set up Chrome WebDriver
 def setup_chromedriver():
-    chromedriver_path = '/mount/src/litscrape/chromedriver.zip'  # Set the desired path on the server
+    chromedriver_path = '/mount/src/litscrape/chromedriver'  # Set the desired path on the server
     
     # Check if chromedriver already exists, if not, download it
     if not os.path.exists(chromedriver_path):
         os.makedirs('/mount/src/litscrape', exist_ok=True)
-        chromedriver_url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver-linux64.zip"
+        chromedriver_url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver_linux64.zip"
         zip_path = "/mount/src/litscrape/chromedriver.zip"  # Set the desired path on the server
         wget.download(chromedriver_url, zip_path)
         os.system(f"unzip {zip_path} -d {os.path.dirname(chromedriver_path)}")
@@ -25,7 +26,10 @@ def scrape_data(url):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/google-chrome'  # Path to Chrome binary on the server
-    driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
+    
+    service = Service(chromedriver_path)  # Set the path to Chrome WebDriver executable
+    
+    driver = webdriver.Chrome(service=service, options=options)
     
     driver.get(url)
     
