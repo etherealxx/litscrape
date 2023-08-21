@@ -11,7 +11,7 @@ def setup_chromedriver():
     # Check if chromedriver already exists, if not, download it
     if not os.path.exists(chromedriver_path):
         os.makedirs('/mount/src/litscrape', exist_ok=True)
-        chromedriver_url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver_linux64.zip"
+        chromedriver_url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver-linux64.zip"
         zip_path = "/mount/src/litscrape/chromedriver.zip"  # Set the desired path on the server
         wget.download(chromedriver_url, zip_path)
         os.system(f"unzip {zip_path} -d {os.path.dirname(chromedriver_path)}")
