@@ -4,6 +4,15 @@ from selenium.webdriver.chrome.service import Service
 import os
 import wget
 
+def list_files_recursive(directory):
+    for root, dirs, files in os.walk(directory):
+        level = root.replace(directory, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print(f"{indent}[{os.path.basename(root)}/]")
+        sub_indent = ' ' * 4 * (level + 1)
+        for file in files:
+            print(f"{sub_indent}{file}")
+
 # Download and set up Chrome WebDriver
 def setup_chromedriver():
     chromedriver_path = '/mount/src/litscrape/chromedriver'  # Set the desired path on the server
@@ -15,6 +24,7 @@ def setup_chromedriver():
         zip_path = "/mount/src/litscrape/chromedriver.zip"  # Set the desired path on the server
         wget.download(chromedriver_url, zip_path)
         os.system(f"unzip {zip_path} -d {os.path.dirname(chromedriver_path)}")
+        list_files_recursive('/mount/src/litscrape')
         os.chmod(chromedriver_path, 0o775)
     
     return chromedriver_path
